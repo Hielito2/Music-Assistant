@@ -1,6 +1,3 @@
-import asyncio
-import httpx
-import os
 from pathlib import Path
 from src.console import console as logger
 
@@ -20,24 +17,6 @@ class FilesChecks:
         if f'{self.name}.torrent' in files:
             return True
         return False
-
-    async def parse_dupes(self, search_name):
-        params = {
-            'api_token': self.config.api_token,
-            'name': search_name
-        }
-        await asyncio.sleep(5)
-        async with httpx.AsyncClient() as client:
-            response = await client.get(self.config.filter_api, params=params)
-        # response = requests.get(self.config.filter_api, params=params)
-        if response.status_code == 200:
-            data = response.json()
-            results = [each['attributes']['name'] for each in data.get("data", [])]
-            if results:
-                return results
-            else:
-                return False
-        return ["Error Data"]
 
 
 

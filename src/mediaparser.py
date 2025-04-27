@@ -1,6 +1,5 @@
 import json
-import os
-from src.console import console as logger
+from pathlib import Path
 from pymediainfo import MediaInfo
 
 
@@ -9,8 +8,7 @@ class MediaParser:
         self.directory = directory
     async def info_parser(self):
         track_data = []
-        excluded_extensions = {".jpeg", ".jpg", ".png", ".lrc", ".cue"}
-        files = [entry.name for entry in os.scandir(self.directory) if entry.is_file() and entry.name.lower().endswith(tuple(excluded_extensions)) is False]
+        files = [file.name for file in Path(self.directory).iterdir() if file.suffix == '.flac']
         for file in files:
             media_info = MediaInfo.parse(f'{self.directory}/{file}', output='JSON', full=False)
             info = json.loads(media_info)

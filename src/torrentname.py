@@ -1,6 +1,5 @@
 import os
 from pathlib import Path
-from os import write
 
 
 class Setup:
@@ -24,12 +23,14 @@ class Setup:
         torrent_name = f'{artist} {album} {track_format} {bits}bits {sampling}'
         search_name = f'{artist} {album}'
         await self.create_tmp_dir(torrent_name)
-        await self.desc(torrent_name)
+        await self.descprtion(torrent_name)
         return torrent_name, search_name, artist, album
-    async def desc(self, name):
+    
+    async def descprtion(self, name):
         track_sampling = ''
-        with open(f'{os.getcwd()}/tmp/{name}/DESCRIPTION.txt', 'a') as desc:
-            desc.write("[table]\n[tr]\n[th] Artists [/th]\n[th] Song Name [/th]\n[th] Track # [/th]\n[th] Format [/th]\n[th] Duration [/th]\n[th] Sampling [/th]\n[th] Bits [/th]\n[/tr]\n")
+        with open(f'{os.getcwd()}/tmp/{name}/DESCRIPTION.txt', 'w') as desc:
+            desc.write("[table][tr][th] Artists [/th][th] Song Name [/th][th] Track # [/th][th] Format [/th][th] Duration [/th][th] Sampling [/th][th] Bits [/th][/tr]")
+        #print(self.data)
         for track in self.data:
             track_artist = track['Artist']
             track_name = track['Track_Title']
@@ -47,7 +48,7 @@ class Setup:
                     track_sampling = '96kHz'
             track_bits = track['Bits']
             with open(f'{os.getcwd()}/tmp/{name}/DESCRIPTION.txt', 'a') as desc:
-                desc.write(f'[tr][td]{track_artist}[/td]  [td]{track_name} [/td] [td]{track_number} [/td] [td]{track_format}[/td] [td] {track_duration} [/td] [td] {track_sampling} [/td] [td] {track_bits} [/td][/tr] \n')
+                desc.write(f'[tr][td]{track_artist}[/td]  [td]{track_name} [/td] [td]{track_number} [/td] [td]{track_format}[/td] [td] {track_duration} [/td] [td] {track_sampling} [/td] [td] {track_bits} [/td][/tr]')
         with open(f'{os.getcwd()}/tmp/{name}/DESCRIPTION.txt', 'a') as desc:
             desc.write('[/table]')
     @staticmethod
